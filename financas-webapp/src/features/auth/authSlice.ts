@@ -15,39 +15,47 @@ interface AuthState {
 }
 
 const storedToken = localStorage.getItem('token')
-const storedUser = localStorage.getItem('user')
+const storedUser = (() => {
+  try {
+    const u = localStorage.getItem('user')
+    return u ? JSON.parse(u) : null
+  } catch {
+    return null
+  }
+})()
 
 const initialState: AuthState = {
   token: storedToken,
-  user: storedUser ? JSON.parse(storedUser) : null,
+  user: storedUser,
   status: 'idle',
   error: null,
 }
 
 export const login = createAsyncThunk(
   'auth/login',
-  async (credentials: { username: string; password: string }, { rejectWithValue }) => {
+  async (payload: { username: string; password: string }, { rejectWithValue }) => {
     try {
-      const { data } = await api.post('/auth/login', credentials)
+      const { data } = await api.post('/auth/login', payload)
       return data
     } catch (err: any) {
       const status = err.response?.status
-      if (status === 401) return rejectWithValue('Credenciais inválidas')
-      return rejectWithValue('Erro ao fazer login')
+      if (status === 401) return rejectWithValue('Username ou senha incorretos.')
+      return rejectWithValue('Erro ao fazer login. Tente novamente.')
     }
   }
 )
 
 export const register = createAsyncThunk(
   'auth/register',
-  async (payload: { username: string; password: string; name: string }, { rejectWithValue }) => {
+  async (payload: { name: string; username: string; password: string }, { rejectWithValue }) => {
     try {
       const { data } = await api.post('/auth/register', payload)
       return data
     } catch (err: any) {
       const status = err.response?.status
-      if (status === 409) return rejectWithValue('Username já está em uso')
-      return rejectWithValue('Erro ao criar conta')
+      if (status === 409) return rejectWithValue('Este username já está em uso.')
+      if (status === 400) return rejectWithValue('Dados inválidos. Verifique os campos.')
+      return rejectWithValue('Erro ao criar conta. Tente novamente.')
     }
   }
 )
