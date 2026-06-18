@@ -30,7 +30,7 @@ export default function DashboardPage() {
 
   useEffect(() => {
     dispatch(fetchMonthTransactions())
-    dispatch(fetchTransactions(0))
+    dispatch(fetchTransactions({ page: 0 }))
   }, [dispatch])
 
   const loading = monthStatus === 'loading' || listStatus === 'loading'

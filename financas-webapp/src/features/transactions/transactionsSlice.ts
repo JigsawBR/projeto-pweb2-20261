@@ -41,12 +41,29 @@ const initialState: TransactionsState = {
   currentPage: 0,
 }
 
+export interface FetchTransactionsParams {
+  page?: number
+  type?: 'INCOME' | 'EXPENSE' | ''
+  categoryId?: number | ''
+  startDate?: string
+  endDate?: string
+}
+
 export const fetchTransactions = createAsyncThunk(
   'transactions/fetchTransactions',
-  async (page: number = 0, { rejectWithValue }) => {
+  async (params: FetchTransactionsParams = {}, { rejectWithValue }) => {
+    const { page = 0, type, categoryId, startDate, endDate } = params
     try {
       const { data } = await api.get('/transactions', {
-        params: { page, size: 10, sort: 'date,desc' },
+        params: {
+          page,
+          size: 10,
+          sort: 'date,desc',
+          ...(type && { type }),
+          ...(categoryId && { categoryId }),
+          ...(startDate && { startDate }),
+          ...(endDate && { endDate }),
+        },
       })
       return data
     } catch (err: any) {
