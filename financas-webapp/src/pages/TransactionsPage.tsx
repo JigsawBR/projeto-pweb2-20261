@@ -9,44 +9,47 @@ export default function TransactionsPage() {
     (state) => state.transactions
   )
 
-  useEffect(() => {
-    dispatch(fetchTransactions(0))
-  }, [dispatch])
+  useEffect(() => { dispatch(fetchTransactions(0)) }, [dispatch])
 
-  function handlePageChange(page: number) {
-    dispatch(fetchTransactions(page))
-  }
+  function handlePageChange(page: number) { dispatch(fetchTransactions(page)) }
 
   function formatAmount(amount: number, type: 'INCOME' | 'EXPENSE') {
-    const formatted = new Intl.NumberFormat('pt-BR', {
-      style: 'currency',
-      currency: 'BRL',
-    }).format(amount)
+    const formatted = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(amount)
     return type === 'EXPENSE' ? `- ${formatted}` : `+ ${formatted}`
   }
 
   function formatDate(dateStr: string) {
-    // dateStr vem como "yyyy-MM-dd" da API
     const [year, month, day] = dateStr.split('-')
     return `${day}/${month}/${year}`
   }
 
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <div className="page-header">
         <h1>Transações</h1>
-        <Link to="/transactions/new">Nova transação</Link>
+        <Link to="/transactions/new" className="btn btn-primary" style={{ width: 'auto' }}>
+          + Nova transação
+        </Link>
       </div>
 
-      {status === 'loading' && <p>Carregando...</p>}
-      {error && <p role="alert">{error}</p>}
+      {status === 'loading' && (
+        <div className="loading">⏳ Carregando transações...</div>
+      )}
 
-      {status !== 'loading' && items.length === 0 && (
-        <p>Nenhuma transação encontrada. <Link to="/transactions/new">Crie uma agora!</Link></p>
+      {error && <div className="alert-error" role="alert">{error}</div>}
+
+      {status !== 'loading' && items.length === 0 && !error && (
+        <div className="empty-state">
+          <div className="empty-icon">📭</div>
+          <p>Nenhuma transação registrada ainda.</p>
+          <Link to="/transactions/new" className="btn btn-primary" style={{ width: 'auto', display: 'inline-flex' }}>
+            Criar primeira transação
+          </Link>
+        </div>
       )}
 
       {items.length > 0 && (
-        <>
+        <div className="table-wrap">
           <table>
             <thead>
               <tr>
@@ -58,14 +61,18 @@ export default function TransactionsPage() {
               </tr>
             </thead>
             <tbody>
-              {items.map((transaction) => (
-                <tr key={transaction.id}>
-                  <td>{formatDate(transaction.date)}</td>
-                  <td>{transaction.categoryName}</td>
-                  <td>{transaction.description || '—'}</td>
-                  <td>{transaction.type === 'INCOME' ? 'Receita' : 'Despesa'}</td>
-                  <td style={{ color: transaction.type === 'INCOME' ? 'green' : 'red' }}>
-                    {formatAmount(transaction.amount, transaction.type)}
+              {items.map((t) => (
+                <tr key={t.id}>
+                  <td>{formatDate(t.date)}</td>
+                  <td>{t.categoryName}</td>
+                  <td style={{ color: 'var(--text-muted)' }}>{t.description || '—'}</td>
+                  <td>
+                    <span className={t.type === 'INCOME' ? 'badge badge-income' : 'badge badge-expense'}>
+                      {t.type === 'INCOME' ? '↑ Receita' : '↓ Despesa'}
+                    </span>
+                  </td>
+                  <td className={t.type === 'INCOME' ? 'amount-income' : 'amount-expense'}>
+                    {formatAmount(t.amount, t.type)}
                   </td>
                 </tr>
               ))}
@@ -73,25 +80,25 @@ export default function TransactionsPage() {
           </table>
 
           {totalPages > 1 && (
-            <div style={{ display: 'flex', gap: '8px', marginTop: '16px' }}>
+            <div className="pagination">
               <button
+                className="btn btn-outline"
                 onClick={() => handlePageChange(currentPage - 1)}
                 disabled={currentPage === 0}
               >
-                Anterior
+                ← Anterior
               </button>
-              <span>
-                Página {currentPage + 1} de {totalPages}
-              </span>
+              <span>Página {currentPage + 1} de {totalPages}</span>
               <button
+                className="btn btn-outline"
                 onClick={() => handlePageChange(currentPage + 1)}
                 disabled={currentPage + 1 >= totalPages}
               >
-                Próxima
+                Próxima →
               </button>
             </div>
           )}
-        </>
+        </div>
       )}
     </div>
   )
