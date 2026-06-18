@@ -17,35 +17,55 @@ export default function LoginPage() {
   }
 
   return (
-    <div>
-      <h1>Login</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="username">Username</label>
-          <input
-            id="username"
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
+    <div className="auth-page">
+      <div className="auth-card">
+        <div className="auth-logo">
+          <div className="auth-logo-icon">💰</div>
+          <span className="auth-logo-text">Finanças</span>
         </div>
-        <div>
-          <label htmlFor="password">Senha</label>
-          <input
-            id="password"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-        {error && <p role="alert">{error}</p>}
-        <button type="submit" disabled={status === 'loading'}>
-          {status === 'loading' ? 'Entrando...' : 'Entrar'}
-        </button>
-      </form>
-      <p>Não tem conta? <Link to="/register">Cadastre-se</Link></p>
+
+        <h1>Boas-vindas de volta</h1>
+        <p className="auth-subtitle">Entre na sua conta para continuar</p>
+
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label htmlFor="username">Username</label>
+            <input
+              id="username"
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              placeholder="seu_username"
+              required
+              autoFocus
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="password">Senha</label>
+            <input
+              id="password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="••••••••"
+              minLength={6}
+              required
+            />
+          </div>
+
+          {error && <div className="alert-error" role="alert">{error}</div>}
+
+          <button className="btn btn-primary" type="submit" disabled={status === 'loading'}>
+            {status === 'loading' ? 'Entrando...' : 'Entrar'}
+          </button>
+        </form>
+
+        <p className="auth-footer">
+          Não tem conta?{' '}
+          <Link to="/register">Criar conta</Link>
+        </p>
+      </div>
     </div>
   )
 }
