@@ -14,7 +14,7 @@ export default function RegisterPage() {
   async function handleSubmit(e: FormEvent) {
     e.preventDefault()
     const result = await dispatch(register({ name, username, password }))
-    if (register.fulfilled.match(result)) navigate('/')
+    if (register.fulfilled.match(result)) navigate('/login')
   }
 
   return (
@@ -43,15 +43,13 @@ export default function RegisterPage() {
           </div>
 
           <div className="form-group">
-            <label htmlFor="username">Username</label>
+            <label htmlFor="username">Email</label>
             <input
               id="username"
-              type="text"
+              type="email"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              placeholder="seu_username"
-              minLength={3}
-              maxLength={50}
+              placeholder="seu@email.com"
               required
             />
           </div>

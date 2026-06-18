@@ -1,7 +1,7 @@
 import { type FormEvent, useEffect, useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../app/hooks'
-import { createTransaction } from '../features/transactions/transactionsSlice'
+import { createTransaction, fetchMonthTransactions } from '../features/transactions/transactionsSlice'
 import { fetchCategories } from '../features/categories/categoriesSlice'
 
 export default function NewTransactionPage() {
@@ -34,7 +34,10 @@ export default function NewTransactionPage() {
         tag: tag || undefined,
       })
     )
-    if (createTransaction.fulfilled.match(result)) navigate('/transactions')
+    if (createTransaction.fulfilled.match(result)) {
+      dispatch(fetchMonthTransactions())
+      navigate('/transactions')
+    }
   }
 
   return (

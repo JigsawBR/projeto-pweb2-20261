@@ -53,7 +53,7 @@ export const register = createAsyncThunk(
       return data
     } catch (err: any) {
       const status = err.response?.status
-      if (status === 409) return rejectWithValue('Este username já está em uso.')
+      if (status === 409) return rejectWithValue('Este email já está em uso.')
       if (status === 400) return rejectWithValue('Dados inválidos. Verifique os campos.')
       return rejectWithValue('Erro ao criar conta. Tente novamente.')
     }
@@ -93,7 +93,7 @@ const authSlice = createSlice({
       .addCase(login.fulfilled, onFulfilled)
       .addCase(login.rejected, (state, action) => { state.status = 'failed'; state.error = action.payload as string })
       .addCase(register.pending, (state) => { state.status = 'loading'; state.error = null })
-      .addCase(register.fulfilled, onFulfilled)
+      .addCase(register.fulfilled, (state) => { state.status = 'idle'; state.error = null })
       .addCase(register.rejected, (state, action) => { state.status = 'failed'; state.error = action.payload as string })
   },
 })
