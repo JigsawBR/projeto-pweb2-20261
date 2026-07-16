@@ -80,5 +80,8 @@ Required by the project spec (not yet added):
 | RF02 | `/transactions`, `/transactions/new` | Transactions slice |
 | RF03 | `/` (dashboard) | Derived selectors from transactions slice |
 | RF04 | TBD by group | — |
+| RF05 | `/goals`, `/goals/new` | Goals slice + Vitest/RTL tests |
+| RF06 | `/spending-limits` | Spending limits slice + Service Worker |
+| RF07 | TBD by group | — |
 
 All routes except `/login` and `/register` are private (redirect to `/login` when unauthenticated). Token and user data stored in a Redux slice. API base URL is `http://localhost:8080`.
