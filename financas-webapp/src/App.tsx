@@ -6,6 +6,8 @@ import RegisterPage from './pages/RegisterPage'
 import DashboardPage from './pages/DashboardPage'
 import TransactionsPage from './pages/TransactionsPage'
 import NewTransactionPage from './pages/NewTransactionPage'
+import GoalsPage from './pages/GoalsPage'
+import NewGoalPage from './pages/NewGoalPage'
 
 const router = createBrowserRouter([
   { path: '/login', element: <LoginPage /> },
@@ -20,6 +22,8 @@ const router = createBrowserRouter([
       { path: '/', element: <DashboardPage /> },
       { path: '/transactions', element: <TransactionsPage /> },
       { path: '/transactions/new', element: <NewTransactionPage /> },
+      { path: '/goals', element: <GoalsPage /> },
+      { path: '/goals/new', element: <NewGoalPage /> },
     ],
   },
 ])
