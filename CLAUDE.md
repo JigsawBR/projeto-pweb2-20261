@@ -34,9 +34,13 @@ Default seeded user: **username** `admin`, **password** `password123`.
 
 ```
 br.edu.ifpb.financas.api/
-├── auth/          AuthController, AuthService, AuthExceptionHandler, DTOs
-├── security/      SecurityConfig, JwtAuthenticationFilter, JwtService, OpenApiConfig
-└── user/          AppUser (JPA entity), UserService (UserDetailsService), UserRepository
+├── auth/           AuthController, AuthService, AuthExceptionHandler, DTOs
+├── security/       SecurityConfig, JwtAuthenticationFilter, JwtService, OpenApiConfig
+├── user/           AppUser (JPA entity), UserService (UserDetailsService), UserRepository
+├── transaction/    TransactionController, TransactionService, TransactionRepository, Entity, DTOs, Specifications
+├── category/       CategoryController, CategoryService, CategoryRepository, Entity, DTOs
+├── goal/           GoalController, GoalService, GoalRepository, Goal (entity), DTOs  [RF05]
+└── spendinglimit/  SpendingLimitController, SpendingLimitService, SpendingLimitRepository, Entity, DTOs  [RF06]
 ```
 
 **Auth flow:** `POST /auth/login` and `POST /auth/register` return a JWT. All other routes require `Authorization: Bearer <token>`.
