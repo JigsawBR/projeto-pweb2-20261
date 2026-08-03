@@ -12,3 +12,12 @@ createRoot(document.getElementById('root')!).render(
     </Provider>
   </StrictMode>,
 )
+
+// Registro do Service Worker (RF06 — cache offline e notificações de limite de gastos)
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').catch((err) => {
+      console.error('Falha ao registrar o Service Worker:', err)
+    })
+  })
+}
