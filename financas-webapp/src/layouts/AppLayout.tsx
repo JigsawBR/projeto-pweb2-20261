@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { NavLink, Outlet, useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../app/hooks'
 import { logout } from '../features/auth/authSlice'
@@ -6,6 +7,14 @@ export default function AppLayout() {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const { user } = useAppSelector((state) => state.auth)
+
+  // Solicita permissão para exibir Web Notifications (usadas pelo Service
+  // Worker para alertar sobre limites de gastos), uma única vez.
+  useEffect(() => {
+    if ('Notification' in window && Notification.permission === 'default') {
+      Notification.requestPermission()
+    }
+  }, [])
 
   function handleLogout() {
     dispatch(logout())
@@ -33,6 +42,9 @@ export default function AppLayout() {
           </NavLink>
           <NavLink to="/goals" className={({ isActive }) => 'sidebar-link' + (isActive ? ' active' : '')}>
             Metas
+          </NavLink>
+          <NavLink to="/spending-limits" className={({ isActive }) => 'sidebar-link' + (isActive ? ' active' : '')}>
+            Limites de Gastos
           </NavLink>
         </nav>
 
