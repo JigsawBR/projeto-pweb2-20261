@@ -3,6 +3,7 @@ import authReducer from '../features/auth/authSlice'
 import transactionsReducer from '../features/transactions/transactionsSlice'
 import categoriesReducer from '../features/categories/categoriesSlice'
 import goalsReducer from '../features/goals/goalsSlice'
+import spendingLimitsReducer from '../features/spendingLimits/spendingLimitsSlice'
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
     transactions: transactionsReducer,
     categories: categoriesReducer,
     goals: goalsReducer,
+    spendingLimits: spendingLimitsReducer,
   },
 })
 

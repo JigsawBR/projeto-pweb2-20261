@@ -3,12 +3,16 @@ import { useNavigate, Link } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../app/hooks'
 import { createTransaction, fetchMonthTransactions } from '../features/transactions/transactionsSlice'
 import { fetchCategories } from '../features/categories/categoriesSlice'
+import { fetchSpendingLimits } from '../features/spendingLimits/spendingLimitsSlice'
+import { selectSpendingStatusByCategory } from '../features/spendingLimits/spendingStatusSelectors'
 
 export default function NewTransactionPage() {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const { status, error } = useAppSelector((state) => state.transactions)
   const { items: categories } = useAppSelector((state) => state.categories)
+  const { items: spendingLimits } = useAppSelector((state) => state.spendingLimits)
+  const { monthItems } = useAppSelector((state) => state.transactions)
 
   const today = new Date().toISOString().split('T')[0]
   const [amount, setAmount] = useState('')
@@ -20,13 +24,31 @@ export default function NewTransactionPage() {
 
   useEffect(() => {
     if (categories.length === 0) dispatch(fetchCategories())
+    dispatch(fetchSpendingLimits())
+    dispatch(fetchMonthTransactions())
   }, [dispatch, categories.length])
+
+  // Status de gasto (antes desta transação) da categoria selecionada
+  const spendingStatus = useAppSelector(
+    selectSpendingStatusByCategory(categoryId ? Number(categoryId) : '')
+  )
+
+  // Projeta o percentual utilizado somando o valor que está sendo digitado,
+  // para alertar o usuário antes mesmo de ele confirmar o envio.
+  const parsedAmount = parseFloat(amount) || 0
+  const projectedSpent =
+    type === 'EXPENSE' && spendingStatus ? spendingStatus.spent + parsedAmount : spendingStatus?.spent ?? 0
+  const projectedPercent =
+    spendingStatus && spendingStatus.limitAmount > 0
+      ? Math.round((projectedSpent / spendingStatus.limitAmount) * 100)
+      : 0
+  const showLimitAlert = type === 'EXPENSE' && !!spendingStatus && parsedAmount > 0 && projectedPercent >= 100
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault()
     const result = await dispatch(
       createTransaction({
-        amount: parseFloat(amount),
+        amount: parsedAmount,
         type,
         categoryId: Number(categoryId),
         date,
@@ -36,7 +58,38 @@ export default function NewTransactionPage() {
     )
     if (createTransaction.fulfilled.match(result)) {
       dispatch(fetchMonthTransactions())
+      notifyIfLimitReached()
       navigate('/transactions')
+    }
+  }
+
+  // Envia uma mensagem ao Service Worker para exibir uma Web Notification
+  // quando o gasto na categoria atinge 80% do limite definido — funciona
+  // mesmo com a aba em segundo plano, pois quem dispara a notificação é o SW.
+  function notifyIfLimitReached() {
+    if (type !== 'EXPENSE') return
+    const limit = spendingLimits.find((l) => l.categoryId === Number(categoryId))
+    if (!limit || limit.limitAmount <= 0) return
+
+    const previousSpent = monthItems
+      .filter((t) => t.type === 'EXPENSE' && t.categoryId === limit.categoryId)
+      .reduce((sum, t) => sum + t.amount, 0)
+    const newSpent = previousSpent + parsedAmount
+    const percentUsed = Math.round((newSpent / limit.limitAmount) * 100)
+
+    if (percentUsed < 80) return
+
+    if (navigator.serviceWorker?.controller) {
+      navigator.serviceWorker.controller.postMessage({
+        type: 'SPENDING_ALERT',
+        payload: {
+          categoryId: limit.categoryId,
+          categoryName: limit.categoryName,
+          limitAmount: limit.limitAmount,
+          spent: newSpent,
+          percentUsed,
+        },
+      })
     }
   }
 
@@ -110,6 +163,12 @@ export default function NewTransactionPage() {
                 <option key={cat.id} value={cat.id}>{cat.name}</option>
               ))}
             </select>
+            {showLimitAlert && (
+              <div className="alert-warning" role="alert" style={{ marginTop: '8px' }}>
+                Esta categoria já atingirá {projectedPercent}% do limite mensal
+                ({spendingStatus && new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(spendingStatus.limitAmount)}) com esta transação.
+              </div>
+            )}
           </div>
 
           <div className="form-group">
