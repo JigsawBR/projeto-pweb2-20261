@@ -7,11 +7,11 @@ export default function ReportPage() {
 
   useEffect(() => {
     function handleMessage(e: MessageEvent) {
-      if (e.origin !== 'http://localhost:5174') return
+      if (!e.origin.startsWith('http://localhost:')) return
       if (e.data?.type === 'REPORT_READY') {
         iframeRef.current?.contentWindow?.postMessage(
           { type: 'AUTH_TOKEN', token },
-          'http://localhost:5174'
+          '*'
         )
       }
     }

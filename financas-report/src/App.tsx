@@ -27,14 +27,14 @@ export default function App() {
   // Recebe o token do app principal via postMessage
   useEffect(() => {
     function handleMessage(e: MessageEvent) {
-      if (e.origin !== 'http://localhost:5173') return
+      if (!e.origin.startsWith('http://localhost:')) return
       if (e.data?.type === 'AUTH_TOKEN' && e.data.token) {
         setToken(e.data.token)
       }
     }
     window.addEventListener('message', handleMessage)
     // Avisa ao pai que está pronto para receber o token
-    window.parent.postMessage({ type: 'REPORT_READY' }, 'http://localhost:5173')
+    window.parent.postMessage({ type: 'REPORT_READY' }, '*')
     return () => window.removeEventListener('message', handleMessage)
   }, [])
 
