@@ -46,6 +46,9 @@ export default function AppLayout() {
           <NavLink to="/spending-limits" className={({ isActive }) => 'sidebar-link' + (isActive ? ' active' : '')}>
             Limites de Gastos
           </NavLink>
+          <NavLink to="/report" className={({ isActive }) => 'sidebar-link' + (isActive ? ' active' : '')}>
+            Relatório
+          </NavLink>
         </nav>
 
         <div className="sidebar-bottom">
