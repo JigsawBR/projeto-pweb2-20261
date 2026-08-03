@@ -1,16 +1,23 @@
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { useAppSelector } from '../app/hooks'
 
 export default function ReportPage() {
   const token = useAppSelector((state) => state.auth.token)
   const iframeRef = useRef<HTMLIFrameElement>(null)
 
-  function handleLoad() {
-    iframeRef.current?.contentWindow?.postMessage(
-      { type: 'AUTH_TOKEN', token },
-      'http://localhost:5174'
-    )
-  }
+  useEffect(() => {
+    function handleMessage(e: MessageEvent) {
+      if (e.origin !== 'http://localhost:5174') return
+      if (e.data?.type === 'REPORT_READY') {
+        iframeRef.current?.contentWindow?.postMessage(
+          { type: 'AUTH_TOKEN', token },
+          'http://localhost:5174'
+        )
+      }
+    }
+    window.addEventListener('message', handleMessage)
+    return () => window.removeEventListener('message', handleMessage)
+  }, [token])
 
   return (
     <div>
@@ -20,7 +27,6 @@ export default function ReportPage() {
       <iframe
         ref={iframeRef}
         src="http://localhost:5174"
-        onLoad={handleLoad}
         style={{ width: '100%', height: '600px', border: 'none', borderRadius: '8px' }}
         title="Relatório por categoria"
       />
