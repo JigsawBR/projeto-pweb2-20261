@@ -31,6 +31,9 @@ export default function AppLayout() {
           <NavLink to="/transactions/new" className={({ isActive }) => 'sidebar-link' + (isActive ? ' active' : '')}>
             Nova transação
           </NavLink>
+          <NavLink to="/goals" className={({ isActive }) => 'sidebar-link' + (isActive ? ' active' : '')}>
+            Metas
+          </NavLink>
         </nav>
 
         <div className="sidebar-bottom">
