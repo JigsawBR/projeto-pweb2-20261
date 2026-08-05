@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../app/hooks'
 import { createGoal } from '../features/goals/goalsSlice'
 import { fetchCategories } from '../features/categories/categoriesSlice'
+import { Icon } from '../components/Icon'
 
 export default function NewGoalPage() {
   const dispatch = useAppDispatch()
@@ -39,7 +40,7 @@ export default function NewGoalPage() {
     <div>
       <div className="page-header">
         <h1>Nova meta</h1>
-        <Link to="/goals" className="btn btn-outline">← Voltar</Link>
+        <Link to="/goals" className="btn btn-outline"><Icon name="arrow-left" size={14} />Voltar</Link>
       </div>
 
       <div className="form-card">

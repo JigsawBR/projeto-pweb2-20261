@@ -1,10 +1,11 @@
 import { type FormEvent, useEffect, useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../app/hooks'
-import { createTransaction, fetchMonthTransactions } from '../features/transactions/transactionsSlice'
+import { createTransaction, fetchMonthTransactions, fetchTransactions } from '../features/transactions/transactionsSlice'
 import { fetchCategories } from '../features/categories/categoriesSlice'
 import { fetchSpendingLimits } from '../features/spendingLimits/spendingLimitsSlice'
 import { selectSpendingStatusByCategory } from '../features/spendingLimits/spendingStatusSelectors'
+import { Icon } from '../components/Icon'
 
 export default function NewTransactionPage() {
   const dispatch = useAppDispatch()
@@ -58,6 +59,7 @@ export default function NewTransactionPage() {
     )
     if (createTransaction.fulfilled.match(result)) {
       dispatch(fetchMonthTransactions())
+      dispatch(fetchTransactions({ page: 0 }))
       notifyIfLimitReached()
       navigate('/transactions')
     }
@@ -97,7 +99,7 @@ export default function NewTransactionPage() {
     <div>
       <div className="page-header">
         <h1>Nova transação</h1>
-        <Link to="/transactions" className="btn btn-outline">← Voltar</Link>
+        <Link to="/transactions" className="btn btn-outline"><Icon name="arrow-left" size={14} />Voltar</Link>
       </div>
 
       <div className="form-card">
@@ -111,14 +113,16 @@ export default function NewTransactionPage() {
                 className={`type-btn ${type === 'EXPENSE' ? 'active-expense' : ''}`}
                 onClick={() => setType('EXPENSE')}
               >
-                ↓ Despesa
+                <Icon name="arrow-down" size={14} />
+                Despesa
               </button>
               <button
                 type="button"
                 className={`type-btn ${type === 'INCOME' ? 'active-income' : ''}`}
                 onClick={() => setType('INCOME')}
               >
-                ↑ Receita
+                <Icon name="arrow-up" size={14} />
+                Receita
               </button>
             </div>
           </div>

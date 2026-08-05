@@ -85,10 +85,10 @@ p { margin: 0; }
   height: 36px;
   background: var(--accent);
   border-radius: 10px;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 18px;
+  color: #fff;
 }
 
 .auth-logo-text {
@@ -412,7 +412,17 @@ tbody tr:hover td { background: rgba(255,255,255,0.02); }
   color: var(--text-muted);
 }
 
-.empty-state .empty-icon { font-size: 48px; margin-bottom: 16px; }
+.empty-state .empty-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 16px;
+  border-radius: 50%;
+  background: var(--bg-input);
+  color: var(--text-muted);
+}
 .empty-state p { font-size: 1rem; margin-bottom: 20px; }
 
 /* ── Form card ── */

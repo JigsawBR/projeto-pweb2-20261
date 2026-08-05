@@ -8,6 +8,7 @@ import {
   deleteSpendingLimit,
 } from '../features/spendingLimits/spendingLimitsSlice'
 import { selectSpendingStatus } from '../features/spendingLimits/spendingStatusSelectors'
+import { Icon } from '../components/Icon'
 
 function fmtCurrency(value: number) {
   return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value)
@@ -55,8 +56,10 @@ export default function SpendingLimitsPage() {
     }
   }
 
-  function handleDelete(id: number) {
-    dispatch(deleteSpendingLimit(id))
+  function handleDelete(id: number, categoryName: string) {
+    if (window.confirm(`Excluir o limite de "${categoryName}"?`)) {
+      dispatch(deleteSpendingLimit(id))
+    }
   }
 
   return (
@@ -123,7 +126,7 @@ export default function SpendingLimitsPage() {
 
       {status !== 'loading' && limits.length === 0 && (
         <div className="empty-state">
-          <div className="empty-icon">🚦</div>
+          <div className="empty-icon"><Icon name="gauge" size={28} /></div>
           <p>Nenhum limite de gastos definido ainda.</p>
         </div>
       )}
@@ -151,10 +154,10 @@ export default function SpendingLimitsPage() {
                   <button
                     type="button"
                     className="btn btn-ghost"
-                    onClick={() => handleDelete(limit.id)}
+                    onClick={() => handleDelete(limit.id, limit.categoryName)}
                     aria-label={`Excluir limite de ${limit.categoryName}`}
                   >
-                    ✕
+                    <Icon name="x" size={16} />
                   </button>
                 </div>
               </div>

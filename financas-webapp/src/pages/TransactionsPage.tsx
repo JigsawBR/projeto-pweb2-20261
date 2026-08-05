@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../app/hooks'
 import { fetchTransactions, type FetchTransactionsParams } from '../features/transactions/transactionsSlice'
 import { fetchCategories } from '../features/categories/categoriesSlice'
+import { Icon } from '../components/Icon'
 
 export default function TransactionsPage() {
   const dispatch = useAppDispatch()
@@ -131,7 +132,7 @@ export default function TransactionsPage() {
 
       {status !== 'loading' && items.length === 0 && !error && (
         <div className="empty-state">
-          <div className="empty-icon">📭</div>
+          <div className="empty-icon"><Icon name="inbox" size={28} /></div>
           <p>{hasActiveFilters ? 'Nenhuma transação encontrada para os filtros aplicados.' : 'Nenhuma transação registrada ainda.'}</p>
           {!hasActiveFilters && (
             <Link to="/transactions/new" className="btn btn-primary" style={{ width: 'auto', display: 'inline-flex' }}>
@@ -161,7 +162,8 @@ export default function TransactionsPage() {
                   <td style={{ color: 'var(--text-muted)' }}>{t.description || '—'}</td>
                   <td>
                     <span className={t.type === 'INCOME' ? 'badge badge-income' : 'badge badge-expense'}>
-                      {t.type === 'INCOME' ? '↑ Receita' : '↓ Despesa'}
+                      <Icon name={t.type === 'INCOME' ? 'arrow-up' : 'arrow-down'} size={12} />
+                      {t.type === 'INCOME' ? 'Receita' : 'Despesa'}
                     </span>
                   </td>
                   <td className={t.type === 'INCOME' ? 'amount-income' : 'amount-expense'}>
@@ -179,7 +181,8 @@ export default function TransactionsPage() {
                 onClick={() => handlePageChange(currentPage - 1)}
                 disabled={currentPage === 0}
               >
-                ← Anterior
+                <Icon name="arrow-left" size={14} />
+                Anterior
               </button>
               <span>Página {currentPage + 1} de {totalPages}</span>
               <button
@@ -187,7 +190,8 @@ export default function TransactionsPage() {
                 onClick={() => handlePageChange(currentPage + 1)}
                 disabled={currentPage + 1 >= totalPages}
               >
-                Próxima →
+                Próxima
+                <Icon name="arrow-right" size={14} />
               </button>
             </div>
           )}

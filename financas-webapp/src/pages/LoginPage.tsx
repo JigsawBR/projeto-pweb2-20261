@@ -2,6 +2,7 @@ import { type FormEvent, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../app/hooks'
 import { login } from '../features/auth/authSlice'
+import { Icon } from '../components/Icon'
 
 export default function LoginPage() {
   const dispatch = useAppDispatch()
@@ -20,7 +21,7 @@ export default function LoginPage() {
     <div className="auth-page">
       <div className="auth-card">
         <div className="auth-logo">
-          <div className="auth-logo-icon">💰</div>
+          <span className="auth-logo-icon"><Icon name="wallet" size={20} color="#fff" /></span>
           <span className="auth-logo-text">Finanças</span>
         </div>
 

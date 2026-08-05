@@ -5,6 +5,7 @@ import { fetchGoals } from '../features/goals/goalsSlice'
 import { fetchMonthTransactions } from '../features/transactions/transactionsSlice'
 import { selectGoalProgress } from '../features/goals/goalSelectors'
 import GoalProgressBar from '../components/GoalProgressBar'
+import { Icon } from '../components/Icon'
 
 export default function GoalsPage() {
   const dispatch = useAppDispatch()
@@ -29,7 +30,7 @@ export default function GoalsPage() {
 
       {status !== 'loading' && goals.length === 0 && !error && (
         <div className="empty-state">
-          <div className="empty-icon">🎯</div>
+          <div className="empty-icon"><Icon name="target" size={28} /></div>
           <p>Nenhuma meta criada ainda.</p>
           <Link to="/goals/new" className="btn btn-primary" style={{ width: 'auto', display: 'inline-flex' }}>
             Criar primeira meta

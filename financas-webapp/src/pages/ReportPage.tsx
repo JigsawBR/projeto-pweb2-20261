@@ -27,7 +27,7 @@ export default function ReportPage() {
       <iframe
         ref={iframeRef}
         src="http://localhost:5174"
-        style={{ width: '100%', height: '600px', border: 'none', borderRadius: '8px' }}
+        style={{ width: '100%', height: '600px', border: '1px solid var(--border)', borderRadius: '8px', background: 'var(--bg)' }}
         title="Relatório por categoria"
       />
     </div>

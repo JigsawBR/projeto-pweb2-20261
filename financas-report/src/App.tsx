@@ -137,16 +137,16 @@ export default function App() {
 }
 
 const styles: Record<string, React.CSSProperties> = {
-  container: { fontFamily: 'system-ui, sans-serif', padding: '24px', color: '#111827', background: '#f9fafb', minHeight: '100vh' },
-  center: { display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', fontFamily: 'system-ui, sans-serif' },
-  muted: { color: '#6b7280' },
-  title: { fontSize: '1.125rem', fontWeight: 600, marginBottom: '20px', color: '#111827' },
+  container: { fontFamily: 'system-ui, sans-serif', padding: '24px', color: '#e8eaf6', background: '#0f1117', minHeight: '100vh' },
+  center: { display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', fontFamily: 'system-ui, sans-serif', background: '#0f1117', color: '#a0a8c0' },
+  muted: { color: '#a0a8c0' },
+  title: { fontSize: '1.125rem', fontWeight: 600, marginBottom: '20px', color: '#e8eaf6' },
   totals: { display: 'flex', gap: '16px', marginBottom: '24px', flexWrap: 'wrap' },
-  totalCard: { flex: 1, minWidth: '140px', background: '#fff', borderRadius: '8px', padding: '16px', border: '1px solid #e5e7eb', display: 'flex', flexDirection: 'column', gap: '4px' },
-  totalLabel: { fontSize: '0.75rem', color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.05em' },
+  totalCard: { flex: 1, minWidth: '140px', background: '#1a1d29', borderRadius: '8px', padding: '16px', border: '1px solid #262a3a', display: 'flex', flexDirection: 'column', gap: '4px' },
+  totalLabel: { fontSize: '0.75rem', color: '#a0a8c0', textTransform: 'uppercase', letterSpacing: '0.05em' },
   totalValue: { fontSize: '1.25rem', fontWeight: 700 },
-  table: { width: '100%', borderCollapse: 'collapse', background: '#fff', borderRadius: '8px', overflow: 'hidden', border: '1px solid #e5e7eb' },
-  th: { padding: '12px 16px', background: '#f3f4f6', fontSize: '0.75rem', fontWeight: 600, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.05em', textAlign: 'left', borderBottom: '1px solid #e5e7eb' },
-  tr: { borderBottom: '1px solid #f3f4f6' },
+  table: { width: '100%', borderCollapse: 'collapse', background: '#1a1d29', borderRadius: '8px', overflow: 'hidden', border: '1px solid #262a3a' },
+  th: { padding: '12px 16px', background: '#12141d', fontSize: '0.75rem', fontWeight: 600, color: '#a0a8c0', textTransform: 'uppercase', letterSpacing: '0.05em', textAlign: 'left', borderBottom: '1px solid #262a3a' },
+  tr: { borderBottom: '1px solid #262a3a' },
   td: { padding: '12px 16px', fontSize: '0.875rem' },
 }
