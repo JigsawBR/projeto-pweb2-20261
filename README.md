@@ -44,3 +44,7 @@ A entrega deve ser feita por meio de um _Pull Request_, contendo na descrição 
 - Não serão aceitas entregas por outros meios ou fora do prazo.
 - Não é permitido sobrescrever o trabalho por meio de um `git push --force` ou outro método que altere o histórico do repositório.
 - Todos os membros do grupo precisam estar listados como contribuidores do repositório para que a entrega seja considerada válida.
+
+  ## GRUPO:
+  MATEUS AUGUSTO DA SILVA LOPO
+  JOSE MATHEUS DE ALMEIDA SILVA
