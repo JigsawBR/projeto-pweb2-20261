@@ -46,5 +46,5 @@ A entrega deve ser feita por meio de um _Pull Request_, contendo na descrição 
 - Todos os membros do grupo precisam estar listados como contribuidores do repositório para que a entrega seja considerada válida.
 
   ## GRUPO:
-  MATEUS AUGUSTO DA SILVA LOPO
-  JOSE MATHEUS DE ALMEIDA SILVA
+  - MATEUS AUGUSTO DA SILVA LOPO
+  - JOSE MATHEUS DE ALMEIDA SILVA
